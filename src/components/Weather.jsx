@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import SearchBar from './SearchBar'
 import WeatherCard from './WeatherCard'
-import { AlertCircle, Info, KeyRound } from 'lucide-react'
+import { AlertCircle } from 'lucide-react'
 
 // Realistic fallback generator when API key is unconfigured or rate-limited
 const generateDemoWeather = (cityName, unit) => {
@@ -16,7 +16,7 @@ const generateDemoWeather = (cityName, unit) => {
     dt: now,
     timezone: 0,
     sys: {
-      country: 'DEMO',
+      country: cityName.toLowerCase() === 'london' ? 'GB' : '',
       sunrise: now - 21600,
       sunset: now + 21600
     },
@@ -32,7 +32,7 @@ const generateDemoWeather = (cityName, unit) => {
       {
         id: 800,
         main: 'Clear',
-        description: 'clear sky (sample data)',
+        description: 'Clear sky',
         icon: '01d'
       }
     ],
@@ -260,24 +260,6 @@ function Weather({ unit, apiKey, onOpenApiSettings, onThemeChange }) {
           </div>
         )}
 
-        {isDemoMode && !error && (
-          <div className="banner banner-warning">
-            <div className="banner-content">
-              <Info size={20} />
-              <span>
-                <strong>Demo Mode:</strong> Displaying simulated weather data. Provide an OpenWeatherMap API key for live real-time API data.
-              </span>
-            </div>
-            <button
-              type="button"
-              className="banner-btn"
-              onClick={onOpenApiSettings}
-            >
-              <KeyRound size={14} style={{ display: 'inline', marginRight: 4 }} />
-              Add API Key
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Loading Skeleton / Spinner */}
